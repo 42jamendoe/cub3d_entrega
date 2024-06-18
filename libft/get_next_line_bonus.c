@@ -68,7 +68,7 @@ char	*ft_next_line(char *buffer)
 		i++;
 	if (buffer[i] == '\n')
 		i++;
-	line = (char *)malloc(sizeof(char) * i + 1);
+	line = (char *)malloc(sizeof(char) * (i + 2));
 	if (!line)
 		return (NULL);
 	j = 0;

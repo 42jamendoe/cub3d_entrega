@@ -123,7 +123,7 @@ int	ft_read_scene(t_cub3d *cub3d, char *argv)
 		ft_safe_exit(cub3d, ERR_SCENE_FD);
 	if (cub3d->map_len == 0)
 		ft_safe_exit(cub3d, ERR_SCENE_FIX);
-	tmp = (char **) malloc ((cub3d->map_len + 1) * sizeof(char *));
+	tmp = (char **) malloc (cub3d->map_len * sizeof(char *));
 	if (!tmp)
 		ft_safe_exit(cub3d, ERR_MEM_ALLOC);
 	cub3d->map = tmp;
