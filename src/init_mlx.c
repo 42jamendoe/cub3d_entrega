@@ -19,7 +19,7 @@ int	ft_close(t_cub3d *cub3d)
 	ft_clean_images(cub3d);
 	if (cub3d->mlx)
 	{
-		//mlx_destroy_display (cub3d->mlx);
+		mlx_destroy_display (cub3d->mlx);
 		free (cub3d->mlx);
 	}
 	if (cub3d->texture)

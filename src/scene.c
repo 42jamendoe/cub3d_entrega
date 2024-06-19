@@ -12,14 +12,6 @@
 #include "../includes/cub3d.h"
 #include "../includes/libft.h"
 
-void	ft_clean_split(char **split)
-{
-	free(split[0]);
-	free(split[1]);
-	free(split[2]);
-	free(split);
-}
-
 int	ft_define_color(t_cub3d *cub3d, char *line, char letter)
 {
 	char			**split;
@@ -59,6 +51,7 @@ void	ft_build_map(t_cub3d *cub3d, char *line, int *n_lin)
 		if (cub3d->texture->nbr_info > 6)
 			ft_safe_exit(cub3d, ERR_SCENE_INFO);
 		ft_test_textures(cub3d);
+		free(line);
 	}
 	else if (line[0] == '0' || line[0] == '1' || line[0] == 'N' \
 	|| line[0] == 'S' || line[0] == 'W' || line[0] == 'E' \

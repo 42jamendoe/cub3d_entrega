@@ -73,7 +73,7 @@ void	ft_safe_exit(t_cub3d *cub3d, char *msg)
 	ft_clean_images(cub3d);
 	if (cub3d->mlx)
 	{
-		//mlx_destroy_display (cub3d->mlx);
+		mlx_destroy_display (cub3d->mlx);
 		free (cub3d->mlx);
 	}
 	if (cub3d->texture)

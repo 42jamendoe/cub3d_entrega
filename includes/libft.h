@@ -76,12 +76,12 @@ char		*ft_strtrim(char const *s1, char const *set);
 char		*ft_substr(char const *s, unsigned int start, size_t len);
 int			ft_tolower(int c);
 int			ft_toupper(int c);
-
-char	*ft_new_buffer(char *buffer, char *nextbuffer, int i, int buffer_len);
-char	*ft_next_buffer(char *buffer);
-char	*ft_next_line(char *buffer);
-char	*ft_buffer(int fd, char *buffer);
-char	*get_next_line(int fd);
-int	ft_line_len(char *buffer);
-int	ft_line_break(char *buffer);
+char		*ft_new_buffer(char *buffer, char *nextbuffer, int i, \
+	int buffer_len);
+char		*ft_next_buffer(char *buffer);
+char		*ft_next_line(char *buffer);
+char		*ft_buffer(int fd, char *buffer);
+char		*get_next_line(int fd);
+int			ft_line_len(char *buffer);
+int			ft_line_break(char *buffer);
 #endif

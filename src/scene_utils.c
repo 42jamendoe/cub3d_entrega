@@ -12,6 +12,14 @@
 #include "../includes/cub3d.h"
 #include "../includes/libft.h"
 
+void	ft_clean_split(char **split)
+{
+	free(split[0]);
+	free(split[1]);
+	free(split[2]);
+	free(split);
+}
+
 void	ft_error_map_lines(t_cub3d *cub3d, char *line, int n_lin)
 {
 	free(line);
