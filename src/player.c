@@ -56,6 +56,8 @@ void	ft_load_player(t_cub3d *cub3d)
 				break ;
 			}
 			i++;
+			if (cub3d->map[n][i] == '\0')
+				break;
 		}
 		n++;
 	}

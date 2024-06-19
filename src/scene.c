@@ -12,6 +12,13 @@
 #include "../includes/cub3d.h"
 #include "../includes/libft.h"
 
+void	ft_clean_split(char **split)
+{
+	free(split[0]);
+	free(split[1]);
+	free(split[2]);
+}
+
 int	ft_define_color(t_cub3d *cub3d, char *line, char letter)
 {
 	char			**split;
@@ -27,6 +34,7 @@ int	ft_define_color(t_cub3d *cub3d, char *line, char letter)
 	color[0] = ft_atoi(split[0]);
 	color[1] = ft_atoi(split[1]);
 	color[2] = ft_atoi(split[2]);
+	ft_clean_split(split);
 	if (color [0] > 255 || color [1] > 255 \
 	|| color [2] > 255)
 		ft_safe_exit (cub3d, ERR_RGB_VALUE);
