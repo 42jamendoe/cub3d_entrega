@@ -17,6 +17,7 @@ void	ft_clean_split(char **split)
 	free(split[0]);
 	free(split[1]);
 	free(split[2]);
+	free(split);
 }
 
 int	ft_define_color(t_cub3d *cub3d, char *line, char letter)
