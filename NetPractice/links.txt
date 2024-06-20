@@ -1,0 +1,2 @@
+https://www.codequoi.com/en/ipv4-addresses-routing-and-subnet-masks/#packets
+https://github.com/lpaube/NetPractice?tab=readme-ov-file#levels
