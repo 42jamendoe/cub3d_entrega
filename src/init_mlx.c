@@ -14,8 +14,7 @@
 
 int	ft_close(t_cub3d *cub3d)
 {
-	printf("%s", "THANK YOU FOR TEST");
-	ft_close_fd(0, 1024);
+	printf("THANK YOU FOR TEST\n");
 	ft_clean_images(cub3d);
 	if (cub3d->mlx)
 	{

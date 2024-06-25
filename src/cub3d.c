@@ -32,7 +32,6 @@ int	ft_check_arg(int argc, char **argv)
 	if (scene_fd < 1)
 	{
 		printf("%s", ERR_SCENE_FD);
-		close(scene_fd);
 		return (EXIT_FAILURE);
 	}
 	close(scene_fd);

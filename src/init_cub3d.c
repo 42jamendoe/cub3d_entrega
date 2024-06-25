@@ -14,6 +14,7 @@
 
 void	ft_init_cub_vars(t_cub3d *cub3d)
 {
+	cub3d->error_nbr = 0;
 	cub3d->map_len = 0;
 	cub3d->map_width = 0;
 	cub3d->map = NULL;
@@ -55,6 +56,8 @@ void	ft_init_structs(t_cub3d *cub3d)
 	cub3d->texture->ceiling = 0;
 	cub3d->texture->floor = 0;
 	cub3d->texture->nbr_info = 0;
+	cub3d->texture->has_c = 0;
+	cub3d->texture->has_f = 0;
 	ft_init_texture_img(&cub3d->screen);
 	ft_init_texture_img(&cub3d->texture->img_no);
 	ft_init_texture_img(&cub3d->texture->img_we);

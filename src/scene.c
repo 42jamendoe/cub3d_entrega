@@ -12,31 +12,26 @@
 #include "../includes/cub3d.h"
 #include "../includes/libft.h"
 
-int	ft_define_color(t_cub3d *cub3d, char *line, char letter)
+void	ft_define_color(t_cub3d *cub3d, char *line, char letter)
 {
 	char			**split;
 	unsigned int	color[3];
-	unsigned int	rgb;
 
 	line++;
 	while (line[0] == ' ' || line [0] == '\t')
 		line++;
 	split = ft_split(line, ',');
 	if (!split || !split[0] || !split[1] || !split[2] || split[3])
-		ft_safe_exit (cub3d, ERR_SCENE_COLOR);
-	color[0] = ft_atoi(split[0]);
-	color[1] = ft_atoi(split[1]);
-	color[2] = ft_atoi(split[2]);
+		cub3d->error_nbr = CUB_FORMAT_RGB;
+	else
+	{
+		color[0] = ft_atoi(split[0]);
+		color[1] = ft_atoi(split[1]);
+		color[2] = ft_atoi(split[2]);
+	}
 	ft_clean_split(split);
-	if (color [0] > 255 || color [1] > 255 \
-	|| color [2] > 255)
-		ft_safe_exit (cub3d, ERR_RGB_VALUE);
-	rgb = color[0] << 16 | color[1] << 8 | color[2];
-	if (letter == 'C')
-		cub3d->texture->ceiling = rgb;
-	if (letter == 'F')
-		cub3d->texture->floor = rgb;
-	return (EXIT_SUCCESS);
+	if (cub3d->error_nbr == CUB_NO_ERRORS)
+		ft_assign_color(cub3d, color, letter);
 }
 
 void	ft_build_map(t_cub3d *cub3d, char *line, int *n_lin)
@@ -47,11 +42,10 @@ void	ft_build_map(t_cub3d *cub3d, char *line, int *n_lin)
 	(line[0] == 'E' && line[1] == 'A') || \
 	(line[0] == 'F' || line[0] == 'C'))
 	{
+		free(line);
 		cub3d->texture->nbr_info++;
 		if (cub3d->texture->nbr_info > 6)
-			ft_safe_exit(cub3d, ERR_SCENE_INFO);
-		ft_test_textures(cub3d);
-		free(line);
+			cub3d->error_nbr = CUB_SCENE_INFO;
 	}
 	else if (line[0] == '0' || line[0] == '1' || line[0] == 'N' \
 	|| line[0] == 'S' || line[0] == 'W' || line[0] == 'E' \
@@ -64,17 +58,16 @@ void	ft_build_map(t_cub3d *cub3d, char *line, int *n_lin)
 
 void	ft_identify_line(t_cub3d *cub3d, char *line)
 {
-	size_t	line_len;
-
-	line_len = ft_strlen(line);
-	if (line[0] == 'N' && line[1] == 'O')
-		cub3d->texture->north = ft_substr(line, 3, line_len - 4);
-	else if (line[0] == 'S' && line[1] == 'O')
-		cub3d->texture->south = ft_substr(line, 3, line_len - 4);
-	else if (line[0] == 'W' && line[1] == 'E')
-		cub3d->texture->west = ft_substr(line, 3, line_len - 4);
-	else if (line[0] == 'E' && line[1] == 'A')
-		cub3d->texture->east = ft_substr(line, 3, line_len - 4);
+	if (line[0] == 'N' && line[1] == 'O' && !cub3d->texture->north)
+		cub3d->texture->north = ft_substr(line, 3, ft_strlen(line) - 4);
+	else if (line[0] == 'S' && line[1] == 'O' && !cub3d->texture->south)
+		cub3d->texture->south = ft_substr(line, 3, ft_strlen(line) - 4);
+	else if (line[0] == 'W' && line[1] == 'E' && !cub3d->texture->west)
+		cub3d->texture->west = ft_substr(line, 3, ft_strlen(line) - 4);
+	else if (line[0] == 'E' && line[1] == 'A' && !cub3d->texture->east)
+		cub3d->texture->east = ft_substr(line, 3, ft_strlen(line) - 4);
+	else if (ft_repeat_texture_info(cub3d, line))
+		cub3d->error_nbr = CUB_SCENE_INFO;
 	else if (line[0] == 'F' || line[0] == 'C')
 		ft_define_color(cub3d, line, line[0]);
 	else if (line[0] == '0' || line[0] == '1' || line[0] == 'N' || \
@@ -82,9 +75,11 @@ void	ft_identify_line(t_cub3d *cub3d, char *line)
 	line[0] == ' ' || line[0] == '\t')
 	{
 		cub3d->map_len++;
-		if ((int)line_len > cub3d->map_width)
-			cub3d->map_width = (int)line_len;
+		if ((int)ft_strlen(line) > cub3d->map_width)
+			cub3d->map_width = (int)ft_strlen(line);
 	}
+	else
+		cub3d->error_nbr = CUB_SCENE_INFO;
 	free(line);
 }
 
@@ -121,15 +116,19 @@ int	ft_read_scene(t_cub3d *cub3d, char *argv)
 {
 	char	**tmp;
 
-	if (ft_info_textures(cub3d, argv, READ_TEXTURES))
-		ft_safe_exit(cub3d, ERR_SCENE_FD);
+	if (ft_info_textures(cub3d, argv, READ_TEXTURES) || cub3d->error_nbr > 0)
+		ft_exit_cub_error(cub3d);
+	ft_test_textures(cub3d);
 	if (cub3d->map_len == 0)
 		ft_safe_exit(cub3d, ERR_SCENE_FIX);
 	tmp = (char **) malloc (cub3d->map_len * sizeof(char *));
 	if (!tmp)
 		ft_safe_exit(cub3d, ERR_MEM_ALLOC);
 	cub3d->map = tmp;
+	cub3d->map[0] = NULL;
 	ft_info_textures(cub3d, argv, WRITE_TEXTURES);
+	if (cub3d->error_nbr > CUB_NO_ERRORS)
+		ft_exit_cub_error(cub3d);
 	ft_load_player(cub3d);
 	ft_check_map(cub3d);
 	return (EXIT_SUCCESS);

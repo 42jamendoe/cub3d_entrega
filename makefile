@@ -1,13 +1,11 @@
 NAME = cub3D
 LIBFT = ./libft/libft.a
-MLX = ./mlx_linux/libmlx.a
+MLX = ./mlx/libmlx.a
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror -g
 RM = rm -rf
 
 SRCD = ./src
-
-SRCD_BONUS = ./src_bonus
 
 SRC = cub3d.c \
 	init_cub3d.c \
@@ -27,16 +25,16 @@ OBJ = $(SRC:%.c=$(SRCD)/%.o)
 all: $(LIBFT) $(MLX) $(NAME)
 
 $(NAME): $(OBJ)
-	$(CC) $(CFLAGS) $(OBJ) -Llibft -lft -Lmlx_linux -lmlx_Linux -lbsd -lXext -lX11 -lm -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJ) -Llibft -lft -Lmlx -lmlx -lbsd -lXext -lX11 -lm -o $(NAME)
 
 $(LIBFT):	
 	$(MAKE) -C libft
 
 $(MLX):	
-	$(MAKE) -C mlx_linux
+	$(MAKE) -C mlx
 
 $(SRCD)/%.o: $(SRCD)/%.c
-	$(CC) $(CFLAGS) -Imlx_Linux -Iincludes -c $< -o $@
+	$(CC) $(CFLAGS) -Imlx -Iincludes -c $< -o $@
 
 clean:
 	$(RM) $(OBJ)
@@ -48,4 +46,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all bonus libft clean fclean re re_bonus
+.PHONY: all libft clean fclean re

@@ -12,7 +12,7 @@
 #ifndef CUB3D_H
 # define CUB3D_H
 
-# include "../mlx_linux/mlx.h"
+# include "../mlx/mlx.h"
 # include <stdio.h>
 # include <fcntl.h>
 # include <unistd.h>
@@ -24,13 +24,23 @@
 # define ERR_SCENE_FD "Error\nCan't read scene file\n"
 # define ERR_SCENE_COLOR "Error\nThe color info isn't well formated\n"
 # define ERR_RGB_VALUE "Error\nThe color info must be between 0 and 255\n"
+# define ERR_RGB_MISS "Error\nYou must have a color to floor and to ceiling\n"
 # define ERR_SCENE_TILE "Error\nCan't read one or more scene tiles\n"
 # define ERR_SCENE_INFO "Error\nYou have more scene info than you should\n"
 # define ERR_SCENE_FIX "Error\nPlease fix the scene fd\n"
 # define ERR_MAP_SPACES "Error\nThe map has empty lines\n"
+# define ERR_CUB_REVIEW "Error\nPlease review the cub file\n"
 # define ERR_PLAYER_MISS "Error\nThe player is missing on the map\n"
 # define ERR_CHAR_MAP "Error\nThe map has invalid characters\n"
 # define ERR_WALLS "Error\nThe map is not surrounded by walls\n"
+# define ERR_DEF_INV "Error\nCub file has invalid info\n"
+
+// CUB_ERROR ------------------------------------------------------------------
+# define CUB_NO_ERRORS 0
+# define CUB_SCENE_INFO 1
+# define CUB_FORMAT_RGB 2
+# define CUB_RGB_VALUE 3
+# define CUB_MAP_INFO 4
 
 // IMAGE_INFO -----------------------------------------------------------------
 # define CUB3D_ARGS 2
@@ -134,6 +144,8 @@ typedef struct s_texture
 	char			*east;
 	unsigned int	floor;
 	unsigned int	ceiling;
+	int				has_f;
+	int				has_c;
 	int				nbr_info;
 	t_img			img_no;
 	t_img			img_so;
@@ -144,6 +156,7 @@ typedef struct s_texture
 typedef struct s_cub3d
 {
 	t_texture		*texture;
+	int				error_nbr;
 	int				map_len;
 	int				map_width;
 	char			**map;
@@ -170,11 +183,14 @@ void			ft_clean_map(t_cub3d *cub3d);
 void			ft_clean_images(t_cub3d *cub3d);
 int				ft_info_textures(t_cub3d *cub3d, char *scene, int stage);
 void			ft_identify_line(t_cub3d *cub3d, char *line);
-int				ft_define_color(t_cub3d *cub3d, char *line, char letter);
+int				ft_repeat_texture_info(t_cub3d *cub3d, char *line);
+void			ft_define_color(t_cub3d *cub3d, char *line, char letter);
+void			ft_assign_color(t_cub3d *cub3d, unsigned int *c, char l);
 void			ft_build_map(t_cub3d *cub3d, char *line, int *n_lin);
 void			ft_clean_split(char **split);
 void			ft_test_textures(t_cub3d *cub3d);
 void			ft_error_map_lines(t_cub3d *cub3d, char *line, int n_lin);
+void			ft_exit_cub_error(t_cub3d *cub3d);
 void			ft_load_player(t_cub3d *cub3d);
 void			ft_set_orientation(t_cub3d *cub3d);
 void			ft_check_map(t_cub3d *cub3d);

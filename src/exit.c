@@ -69,7 +69,6 @@ void	ft_close_fd(int min, int max)
 void	ft_safe_exit(t_cub3d *cub3d, char *msg)
 {
 	printf("%s", msg);
-	ft_close_fd(0, 1024);
 	ft_clean_images(cub3d);
 	if (cub3d->mlx)
 	{

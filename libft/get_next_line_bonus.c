@@ -73,7 +73,7 @@ char	*ft_next_line(char *buffer)
 		return (NULL);
 	j = 0;
 	while (j < i)
-	{	
+	{
 		line[j] = buffer[j];
 		j++;
 	}
